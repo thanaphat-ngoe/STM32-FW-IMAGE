@@ -1219,10 +1219,10 @@
 			[
 				{
 					"name" : "HELPSTRING",
-					"value" : "No help, variable specified on the command line."
+					"value" : "The CMake toolchain file"
 				}
 			],
-			"type" : "UNINITIALIZED",
+			"type" : "FILEPATH",
 			"value" : "/Users/hotlatte/Desktop/Electronics/STM32-FW-IMAGE/cmake/gcc-arm-none-eabi.cmake"
 		},
 		{

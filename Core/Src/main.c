@@ -18,9 +18,8 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "stm32l0xx_hal.h"
-#include <stdint.h>
-#include <sys/cdefs.h>
+#include "stm32l053xx.h"
+#include "stm32l0xx_hal_gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -39,7 +38,7 @@ typedef struct FirmwareHeader_TypeDef {
 	uint32_t CRC32;
 	uint32_t Signature_R[8];
 	uint32_t Signature_S[8];
-	uint32_t Reserved[8];
+	uint32_t Reserved[41];
 } FirmwareHeader_TypeDef;
 /* USER CODE END PTD */
 
@@ -68,10 +67,9 @@ FirmwareHeader_TypeDef firmware_header = {
 	.CRC32			   = 0xFFFFFFFF,
 	.Signature_R       = { [0 ... 7] = 0xFFFFFFFF },
 	.Signature_S       = { [0 ... 7] = 0xFFFFFFFF },
-	.Reserved 	       = { [0 ... 7] = 0xFFFFFFFF }
+	.Reserved 	       = { [0 ... 40] = 0xFFFFFFFF }
 };
 
-uint8_t data[5] = "HELLO";
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -88,7 +86,6 @@ static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
-
 /**
   * @brief  The application entry point.
   * @retval int
@@ -97,7 +94,7 @@ int main(void)
 {
 
 	/* USER CODE BEGIN 1 */
-
+	__enable_irq();
 	/* USER CODE END 1 */
 
 	/* MCU Configuration--------------------------------------------------------*/
@@ -128,7 +125,7 @@ int main(void)
 	while (1) 
 	{
 		/* USER CODE END WHILE */
-		HAL_UART_Transmit(&huart2, data, 5, 500);
+		HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
 		HAL_Delay(500);
 		/* USER CODE BEGIN 3 */
 	}
