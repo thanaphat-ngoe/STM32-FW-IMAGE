@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/hotlatte/Desktop/Electronics/STM32-FW-IMAGE/build/Release/cmake_install.cmake",
+		"/Users/hotlatte/Desktop/Electronics/STM32-FW-IMAGE/build/Release/cmake/stm32cubemx/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

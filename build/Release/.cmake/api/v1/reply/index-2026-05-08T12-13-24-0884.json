@@ -1,0 +1,132 @@
+{
+	"cmake" : 
+	{
+		"generator" : 
+		{
+			"multiConfig" : false,
+			"name" : "Ninja"
+		},
+		"paths" : 
+		{
+			"cmake" : "/Users/hotlatte/Library/Application Support/stm32cube/bundles/cmake/4.3.1+st.1/CMake.app/Contents/bin/cmake",
+			"cpack" : "/Users/hotlatte/Library/Application Support/stm32cube/bundles/cmake/4.3.1+st.1/CMake.app/Contents/bin/cpack",
+			"ctest" : "/Users/hotlatte/Library/Application Support/stm32cube/bundles/cmake/4.3.1+st.1/CMake.app/Contents/bin/ctest",
+			"root" : "/Users/hotlatte/Library/Application Support/stm32cube/bundles/cmake/4.3.1+st.1/CMake.app/Contents/share/cmake-4.3"
+		},
+		"version" : 
+		{
+			"isDirty" : false,
+			"major" : 4,
+			"minor" : 3,
+			"patch" : 1,
+			"string" : "4.3.1",
+			"suffix" : ""
+		}
+	},
+	"objects" : 
+	[
+		{
+			"jsonFile" : "codemodel-v2-fbe35660af43bd62d351.json",
+			"kind" : "codemodel",
+			"version" : 
+			{
+				"major" : 2,
+				"minor" : 10
+			}
+		},
+		{
+			"jsonFile" : "cache-v2-ac87fb702805a4649227.json",
+			"kind" : "cache",
+			"version" : 
+			{
+				"major" : 2,
+				"minor" : 0
+			}
+		},
+		{
+			"jsonFile" : "cmakeFiles-v1-b16cb1740b53e19f536d.json",
+			"kind" : "cmakeFiles",
+			"version" : 
+			{
+				"major" : 1,
+				"minor" : 1
+			}
+		},
+		{
+			"jsonFile" : "toolchains-v1-ad20d947bccc9af26b3e.json",
+			"kind" : "toolchains",
+			"version" : 
+			{
+				"major" : 1,
+				"minor" : 1
+			}
+		}
+	],
+	"reply" : 
+	{
+		"client-vscode" : 
+		{
+			"query.json" : 
+			{
+				"requests" : 
+				[
+					{
+						"kind" : "cache",
+						"version" : 2
+					},
+					{
+						"kind" : "codemodel",
+						"version" : 2
+					},
+					{
+						"kind" : "toolchains",
+						"version" : 1
+					},
+					{
+						"kind" : "cmakeFiles",
+						"version" : 1
+					}
+				],
+				"responses" : 
+				[
+					{
+						"jsonFile" : "cache-v2-ac87fb702805a4649227.json",
+						"kind" : "cache",
+						"version" : 
+						{
+							"major" : 2,
+							"minor" : 0
+						}
+					},
+					{
+						"jsonFile" : "codemodel-v2-fbe35660af43bd62d351.json",
+						"kind" : "codemodel",
+						"version" : 
+						{
+							"major" : 2,
+							"minor" : 10
+						}
+					},
+					{
+						"jsonFile" : "toolchains-v1-ad20d947bccc9af26b3e.json",
+						"kind" : "toolchains",
+						"version" : 
+						{
+							"major" : 1,
+							"minor" : 1
+						}
+					},
+					{
+						"jsonFile" : "cmakeFiles-v1-b16cb1740b53e19f536d.json",
+						"kind" : "cmakeFiles",
+						"version" : 
+						{
+							"major" : 1,
+							"minor" : 1
+						}
+					}
+				]
+			}
+		}
+	}
+}
