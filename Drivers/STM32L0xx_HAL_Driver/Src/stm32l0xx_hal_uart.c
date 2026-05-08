@@ -288,6 +288,7 @@ static void UART_RxISR_16BIT(UART_HandleTypeDef *huart);
   * @param huart UART handle.
   * @retval HAL status
   */
+  volatile uint32_t value = 0;
 HAL_StatusTypeDef HAL_UART_Init(UART_HandleTypeDef *huart)
 {
   /* Check the UART handle allocation */
@@ -295,6 +296,8 @@ HAL_StatusTypeDef HAL_UART_Init(UART_HandleTypeDef *huart)
   {
     return HAL_ERROR;
   }
+
+  value = *((uint32_t *)0x50000020);
 
   if (huart->Init.HwFlowCtl != UART_HWCONTROL_NONE)
   {
@@ -306,6 +309,8 @@ HAL_StatusTypeDef HAL_UART_Init(UART_HandleTypeDef *huart)
     /* Check the parameters */
     assert_param((IS_UART_INSTANCE(huart->Instance)) || (IS_LPUART_INSTANCE(huart->Instance)));
   }
+
+  value = *((uint32_t *)0x50000020);
 
   if (huart->gState == HAL_UART_STATE_RESET)
   {
@@ -328,6 +333,8 @@ HAL_StatusTypeDef HAL_UART_Init(UART_HandleTypeDef *huart)
 #endif /* (USE_HAL_UART_REGISTER_CALLBACKS) */
   }
 
+  value = *((uint32_t *)0x50000020);
+
   huart->gState = HAL_UART_STATE_BUSY;
 
   __HAL_UART_DISABLE(huart);
@@ -339,12 +346,13 @@ HAL_StatusTypeDef HAL_UART_Init(UART_HandleTypeDef *huart)
     UART_AdvFeatureConfig(huart);
   }
 
+  value = *((uint32_t *)0x50000020);
   /* Set the UART Communication parameters */
   if (UART_SetConfig(huart) == HAL_ERROR)
   {
     return HAL_ERROR;
   }
-
+value = *((uint32_t *)0x50000020);
   /* In asynchronous mode, the following bits must be kept cleared:
   - LINEN and CLKEN bits in the USART_CR2 register,
   - SCEN, HDSEL and IREN  bits in the USART_CR3 register.*/
