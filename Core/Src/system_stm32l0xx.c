@@ -246,11 +246,11 @@ void SystemCoreClockUpdate (void)
 			/* HSI oscillator clock selected as PLL clock entry */
 			if ((RCC->CR & RCC_CR_HSIDIVF) != 0U)
 			{
-			SystemCoreClock = (((HSI_VALUE / 4U) * pllmul) / plldiv);
+				SystemCoreClock = (((HSI_VALUE / 4U) * pllmul) / plldiv);
 			}
 			else
 			{
-			SystemCoreClock = (((HSI_VALUE) * pllmul) / plldiv);
+				SystemCoreClock = (((HSI_VALUE) * pllmul) / plldiv);
 			}
 		}
 		else
