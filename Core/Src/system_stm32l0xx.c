@@ -86,8 +86,8 @@ typedef struct FirmwareHeader_TypeDef {
 	uint32_t DeviceID;
 	uint32_t Version;
 	uint32_t Size;
-	uint32_t Signature_R[8];
-	uint32_t Signature_S[8];
+	uint8_t  Signature_R[32];
+	uint8_t  Signature_S[32];
 	uint32_t Reserved[43];
 	uint32_t CRC32;
 } FirmwareHeader_TypeDef;

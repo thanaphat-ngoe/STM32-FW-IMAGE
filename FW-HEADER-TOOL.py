@@ -59,8 +59,8 @@ def fill_firmware_header(app_in_path, app_out_path, version_num, priv_key_path):
         print(f"   > Signature R: 0x{r:064X}")
         print(f"   > Signature S: 0x{s:064X}")
 
-        r_bytes = r.to_bytes(32, byteorder='little')
-        s_bytes = s.to_bytes(32, byteorder='little')
+        r_bytes = r.to_bytes(32, byteorder='big')
+        s_bytes = s.to_bytes(32, byteorder='big')
 
         app_data[OFFSET_SIG_R : OFFSET_SIG_R + 32] = r_bytes
         app_data[OFFSET_SIG_S : OFFSET_SIG_S + 32] = s_bytes

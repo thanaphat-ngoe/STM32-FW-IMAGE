@@ -33,8 +33,8 @@ typedef struct FirmwareHeader_TypeDef {
 	uint32_t DeviceID;
 	uint32_t Version;
 	uint32_t Size;
-	uint32_t Signature_R[8];
-	uint32_t Signature_S[8];
+	uint8_t  Signature_R[32];
+	uint8_t  Signature_S[32];
 	uint32_t Reserved[43];
 	uint32_t CRC32;
 } FirmwareHeader_TypeDef;
@@ -60,8 +60,8 @@ static const FirmwareHeader_TypeDef firmware_header = {
 	.DeviceID          = 0x1,
 	.Version           = 0xFFFFFFFF,
 	.Size	           = 0xFFFFFFFF,
-	.Signature_R       = { [0 ...  7] = 0xFFFFFFFF },
-	.Signature_S       = { [0 ...  7] = 0xFFFFFFFF },
+	.Signature_R       = { [0 ... 31] = 0xFF },
+	.Signature_S       = { [0 ... 31] = 0xFF },
 	.Reserved 	       = { [0 ... 42] = 0xFFFFFFFF },
 	.CRC32			   = 0xFFFFFFFF
 };
