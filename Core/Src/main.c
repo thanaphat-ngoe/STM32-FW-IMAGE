@@ -33,12 +33,10 @@ typedef struct FirmwareHeader_TypeDef {
 	uint32_t DeviceID;
 	uint32_t Version;
 	uint32_t Size;
-	uint32_t Flags;
-	uint32_t EntryPointAddress;
-	uint32_t CRC32;
 	uint32_t Signature_R[8];
 	uint32_t Signature_S[8];
-	uint32_t Reserved[41];
+	uint32_t Reserved[43];
+	uint32_t CRC32;
 } FirmwareHeader_TypeDef;
 /* USER CODE END PTD */
 
@@ -57,17 +55,15 @@ typedef struct FirmwareHeader_TypeDef {
 UART_HandleTypeDef huart2;
 
 __attribute__((section(".firmware_header"), used))
-FirmwareHeader_TypeDef firmware_header = {
+static const FirmwareHeader_TypeDef firmware_header = {
 	.MagicNumber       = 0x5A5A5A5A,
 	.DeviceID          = 0x1,
 	.Version           = 0xFFFFFFFF,
 	.Size	           = 0xFFFFFFFF,
-	.Flags	           = 0xFFFFFFFF,
-	.EntryPointAddress = (FIRMWARE_START_ADDRESS + sizeof(FirmwareHeader_TypeDef)),
-	.CRC32			   = 0xFFFFFFFF,
-	.Signature_R       = { [0 ... 7] = 0xFFFFFFFF },
-	.Signature_S       = { [0 ... 7] = 0xFFFFFFFF },
-	.Reserved 	       = { [0 ... 40] = 0xFFFFFFFF }
+	.Signature_R       = { [0 ...  7] = 0xFFFFFFFF },
+	.Signature_S       = { [0 ...  7] = 0xFFFFFFFF },
+	.Reserved 	       = { [0 ... 42] = 0xFFFFFFFF },
+	.CRC32			   = 0xFFFFFFFF
 };
 
 /* USER CODE BEGIN PV */
@@ -172,11 +168,11 @@ void SystemClock_Config(void)
 	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
 	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
 	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-
 	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
 	{
 		Error_Handler();
 	}
+	
 	PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2;
 	PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
 	if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)

@@ -62,12 +62,25 @@ list(REMOVE_ITEM CMAKE_C_IMPLICIT_LINK_LIBRARIES ob)
 # Add linked libraries
 target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
-
     # Add user defined libraries
 )
 
-# Generate BIN files
+# Convert Firmware .elf to .bin
 add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} -O binary ${CMAKE_PROJECT_NAME}.elf ${CMAKE_PROJECT_NAME}.bin
-    COMMENT "Generating BIN files"
+    COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:${CMAKE_PROJECT_NAME}> ${CMAKE_PROJECT_NAME}.bin
+    BYPRODUCTS ${CMAKE_PROJECT_NAME}.bin
+    COMMENT "Generating Firmware BIN file..."
+)
+
+# Find Python
+find_package(Python3 REQUIRED COMPONENTS Interpreter)
+
+# Run the Unified Builder Script
+add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
+    COMMAND Python3::Interpreter ${CMAKE_SOURCE_DIR}/FW-HEADER-TOOL.py 
+		${CMAKE_SOURCE_DIR}/build/Release/STM32-FW-IMAGE.bin # <--- Arg 1: Unsigned Firmware Image
+		${CMAKE_SOURCE_DIR}/STM32-FW-IMAGE-SIGNED.bin        # <--- Arg 2: Signed Firmware Image
+		1                                       			 # <--- Arg 3: Version Number
+		${CMAKE_SOURCE_DIR}/private.pem         			 # <--- Arg 4: Absolute path to Private Key
+    COMMENT "Injecting Cryptography Metadata..."
 )

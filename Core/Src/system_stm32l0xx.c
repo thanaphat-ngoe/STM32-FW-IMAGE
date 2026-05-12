@@ -86,12 +86,10 @@ typedef struct FirmwareHeader_TypeDef {
 	uint32_t DeviceID;
 	uint32_t Version;
 	uint32_t Size;
-	uint32_t Flags;
-	uint32_t EntryPointAddress;
-	uint32_t CRC32;
 	uint32_t Signature_R[8];
 	uint32_t Signature_S[8];
-	uint32_t Reserved[41];
+	uint32_t Reserved[43];
+	uint32_t CRC32;
 } FirmwareHeader_TypeDef;
 
 #define BOOTLOADER_SIZE (0x4000U) // 16 KByte (16384 Byte)
