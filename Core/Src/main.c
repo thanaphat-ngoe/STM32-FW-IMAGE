@@ -33,8 +33,8 @@ typedef struct FirmwareHeader_TypeDef {
 	uint32_t DeviceID;
 	uint32_t Version;
 	uint32_t Size;
-	uint8_t  Signature_R[32];
-	uint8_t  Signature_S[32];
+	uint32_t Signature_R[8];
+	uint32_t Signature_S[8];
 	uint32_t Reserved[43];
 	uint32_t CRC32;
 } FirmwareHeader_TypeDef;
@@ -42,8 +42,14 @@ typedef struct FirmwareHeader_TypeDef {
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define BOOTLOADER_SIZE        (0x4000U) // 16 KByte (16384 Byte)
-#define FIRMWARE_START_ADDRESS (FLASH_BASE + BOOTLOADER_SIZE) // 0x08000000 + 0x4000 (0x08004000)
+#define USER_FLASH_SIZE                     (0x10000U) 
+#define BOOTLOADER_SIZE                     (0x5000U)                                                              // 20 KByte -> (20480 Byte) (0x5000)
+#define MAX_FIRMWARE_IMAGE_SIZE             ((USER_FLASH_SIZE - BOOTLOADER_SIZE) / 2)                              // 44 (45056 Byte) / 2 -> (22528 Byte) (0x5800)
+ 
+#define FIRMWARE_IMAGE_START_ADDRESS_BANK_1 (FLASH_BASE + BOOTLOADER_SIZE)                                         // 0x08000000 + 0x5000 (0x08005000)
+#define FIRMWARE_ENTRY_POINT_ADDRESS_BANK_1 (FIRMWARE_IMAGE_START_ADDRESS_BANK_1 + sizeof(FirmwareHeader_TypeDef)) // 0x08005000 + 0x0100 (0x08005100)
+#define FIRMWARE_IMAGE_START_ADDRESS_BANK_2 (FIRMWARE_IMAGE_START_ADDRESS_BANK_1 + MAX_FIRMWARE_IMAGE_SIZE)        // 0x08005000 + 0x5800 (0x0800A800)
+#define FIRMWARE_ENTRY_POINT_ADDRESS_BANK_2 (FIRMWARE_IMAGE_START_ADDRESS_BANK_2 + sizeof(FirmwareHeader_TypeDef)) // 0x0800A800 + 0x0100 (0x0800A900)
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -60,8 +66,8 @@ static const FirmwareHeader_TypeDef firmware_header = {
 	.DeviceID          = 0x1,
 	.Version           = 0xFFFFFFFF,
 	.Size	           = 0xFFFFFFFF,
-	.Signature_R       = { [0 ... 31] = 0xFF },
-	.Signature_S       = { [0 ... 31] = 0xFF },
+	.Signature_R       = { [0 ...  7] = 0x0 },
+	.Signature_S       = { [0 ...  7] = 0x0 },
 	.Reserved 	       = { [0 ... 42] = 0xFFFFFFFF },
 	.CRC32			   = 0xFFFFFFFF
 };
