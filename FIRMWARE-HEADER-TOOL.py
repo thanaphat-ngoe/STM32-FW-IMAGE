@@ -5,7 +5,7 @@ from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives.asymmetric.utils import decode_dss_signature
 
 # --- Configuration ---
-HEADER_SIZE      = 256    # Exact size of FirmwareHeader_TypeDef
+HEADER_SIZE      = 256
 
 # ---------------------------------------------------------
 # NEW OFFSETS (Based on the updated C Struct)
@@ -15,6 +15,7 @@ OFFSET_SIZE      = 0x0C  # 12
 OFFSET_SIG_R     = 0x10  # 16
 OFFSET_SIG_S     = 0x30  # 48
 OFFSET_CRC32     = 0xFC  # 252
+
 
 def crc32_ethernet(data: bytes) -> int:
     crc = 0xFFFFFFFF
@@ -30,7 +31,8 @@ def crc32_ethernet(data: bytes) -> int:
             crc &= 0xFFFFFFFF
     return crc
 
-def fill_firmware_header(app_in_path, app_out_path, version_num, priv_key_path):
+
+def fill_firmware_header(app_in_path, app_out_signed_path, app_out_unsigned_path, version_num, priv_key_path):
     try:
         # PROCESS FIRMWARE & HEADER
         with open(app_in_path, "rb") as f:
@@ -45,8 +47,11 @@ def fill_firmware_header(app_in_path, app_out_path, version_num, priv_key_path):
 
         struct.pack_into("<I", app_data, OFFSET_VERSION, version_num)
         struct.pack_into("<I", app_data, OFFSET_SIZE, fw_size)
+        
+        with open(app_out_unsigned_path, "wb") as f:
+            f.write(app_data)
 
-        # SIGNATURE GENERATION (ECDSA secp256r1)
+        # SIGNATURE GENERATION (ECDSA SECP256R1)
         print("\nCryptography & Integrity:")
         print(" - Generating ECDSA SHA-256 Signature...")
         
@@ -76,11 +81,11 @@ def fill_firmware_header(app_in_path, app_out_path, version_num, priv_key_path):
         struct.pack_into("<I", app_data, OFFSET_CRC32, computed_crc)
 
         # WRITE FILLED APPLICATION OUTPUT
-        with open(app_out_path, "wb") as f:
+        with open(app_out_signed_path, "wb") as f:
             f.write(app_data)
 
         print("\n" + "="*50)
-        print(f"SUCCESS! Firmware header filled: '{app_out_path}'")
+        print(f"SUCCESS! Firmware header filled: '{app_out_signed_path}'")
         print("="*50)
 
     except Exception as e:
@@ -88,10 +93,14 @@ def fill_firmware_header(app_in_path, app_out_path, version_num, priv_key_path):
         sys.exit(1)
 
 if __name__ == "__main__":
-    if len(sys.argv) == 5:
-        version_arg = int(sys.argv[3])
-        priv_key_arg = sys.argv[4]
-        fill_firmware_header(sys.argv[1], sys.argv[2], version_arg, priv_key_arg)
+    if len(sys.argv) == 6:
+        app_in_arg = sys.argv[1]
+        app_out_signed_arg = sys.argv[2]
+        app_out_unsigned_arg = sys.argv[3]
+        version_arg = int(sys.argv[4])
+        priv_key_arg = sys.argv[5]
+        
+        fill_firmware_header(app_in_arg, app_out_signed_arg, app_out_unsigned_arg, version_arg, priv_key_arg)
     else:
-        print("Usage: python FW-HEADER-TOOL.py <app_in.bin> <app_out.bin> <version_number> <private_key_path>")
+        print("Usage: python FIRMWARE-HEADER-TOOL.py <app_in.bin> <app_out_signed.bin> <app_out_unsigned.bin> <version_number> <private_key_path>")
         sys.exit(1)

@@ -69,7 +69,8 @@ _Min_Stack_Size = 0x400; /* required amount of stack */
 /* Define output sections */
 SECTIONS
 {
-	.firmware_header : {
+	.firmware_header : 
+	{
         . = ALIGN(4);
         KEEP(*(.firmware_header))
         . = ALIGN(4);
@@ -100,7 +101,7 @@ SECTIONS
 		_etext = .; /* define a global symbols at end of code */
   	} >FLASH
 
-  /* Constant data goes into FLASH */
+   	/* Constant data goes into FLASH */
 	.rodata :
 	{
 		. = ALIGN(4);
@@ -166,7 +167,6 @@ SECTIONS
 		*(.data*) /* .data* sections */
 		*(.RamFunc) /* .RamFunc sections */
 		*(.RamFunc*) /* .RamFunc* sections */
-
 		. = ALIGN(4);
 	} >RAM AT>FLASH
 
@@ -193,6 +193,7 @@ SECTIONS
 	PROVIDE(__data_source = LOADADDR(.data));
 	PROVIDE(__data_source_end = __tdata_source_end);
 	PROVIDE(__data_source_size = __data_source_end - __data_source);
+	
 	/* Uninitialized data section */
 	.tbss(NOLOAD) : ALIGN(4)
 	{
@@ -221,7 +222,6 @@ SECTIONS
 		*(.bss)
 		*(.bss*)
 		*(COMMON)
-
 		. = ALIGN(4);
 		_ebss = .; /* define a global symbol at bss end */
 		__bss_end__ = _ebss;

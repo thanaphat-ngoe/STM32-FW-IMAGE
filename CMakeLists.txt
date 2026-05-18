@@ -69,7 +69,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:${CMAKE_PROJECT_NAME}> ${CMAKE_PROJECT_NAME}.bin
     BYPRODUCTS ${CMAKE_PROJECT_NAME}.bin
-    COMMENT "Generating Firmware BIN file..."
+    COMMENT "[1/2] Generating Firmware BIN file..."
 )
 
 # Find Python
@@ -77,10 +77,11 @@ find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
 # Run the Unified Builder Script
 add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
-    COMMAND Python3::Interpreter ${CMAKE_SOURCE_DIR}/FW-HEADER-TOOL.py 
-		${CMAKE_SOURCE_DIR}/build/Release/STM32-FW-IMAGE.bin # <--- Arg 1: Unsigned Firmware Image
+    COMMAND Python3::Interpreter ${CMAKE_SOURCE_DIR}/FIRMWARE-HEADER-TOOL.py 
+		${CMAKE_SOURCE_DIR}/build/Release/STM32-FW-IMAGE.bin # <--- Arg 1: Raw Firmware Image
 		${CMAKE_SOURCE_DIR}/STM32-FW-IMAGE-SIGNED.bin        # <--- Arg 2: Signed Firmware Image
+		${CMAKE_SOURCE_DIR}/STM32-FW-IMAGE-UNSIGNED.bin      # <--- Arg 2: Unsigned Firmware Image
 		1                                       			 # <--- Arg 3: Version Number
 		${CMAKE_SOURCE_DIR}/private.pem         			 # <--- Arg 4: Absolute path to Private Key
-    COMMENT "Injecting Cryptography Metadata..."
+    COMMENT "[2/2] Filling Firmware Metadata..."
 )
